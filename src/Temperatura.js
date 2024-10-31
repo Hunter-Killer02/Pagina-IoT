@@ -12,7 +12,6 @@ const Temperatura = () => {
     const gFahrenheitRef = useRef(null);
 
     useEffect(() => {
-        // Inicializa los medidores solo si aún no han sido creados
         if (!gCelsiusRef.current) {
             gCelsiusRef.current = new JustGage({
                 id: "gaugeC",
@@ -61,7 +60,6 @@ const Temperatura = () => {
         getReading();
         const intervalId = setInterval(getReading, 1000);
 
-        // Limpia el intervalo al desmontar el componente
         return () => clearInterval(intervalId);
     }, [url]);
 
@@ -69,11 +67,11 @@ const Temperatura = () => {
         <div className="gauge-container" style={{ display: 'flex', justifyContent: 'center', gap: '40px' }}>
             <div style={{ textAlign: 'center' }}>
                 <h2>Temperatura (°C)</h2>
-                <div id="gaugeC" style={{ width: '800px', height: '760px' }}></div>
+                <div id="gaugeC" style={{ width: '600px', height: '560px' }}></div>
             </div>
             <div style={{ textAlign: 'center' }}>
                 <h2>Temperatura (°F)</h2>
-                <div id="gaugeF" style={{ width: '800px', height: '760px' }}></div>
+                <div id="gaugeF" style={{ width: '600px', height: '560px' }}></div>
             </div>
         </div>
     );
