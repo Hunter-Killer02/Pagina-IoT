@@ -11,7 +11,6 @@ const Temperatura = () => {
     const gFahrenheitRef = useRef(null);
 
     useEffect(() => {
-        // Establecer el fondo blanco por defecto
         document.body.style.backgroundColor = "#FFFFFF";
 
         if (!gCelsiusRef.current) {
@@ -40,11 +39,11 @@ const Temperatura = () => {
 
         const changeBackgroundColor = (tempC) => {
             if (tempC < 20) {
-                document.body.style.backgroundColor = "#ADD8E6"; // Azul claro
+                document.body.style.backgroundColor = "#ADD8E6";
             } else if (tempC >= 30 && tempC < 40) {
-                document.body.style.backgroundColor = "#FFD580"; // Naranja claro
+                document.body.style.backgroundColor = "#FFD580";
             } else if (tempC >= 40) {
-                document.body.style.backgroundColor = "#FFB6C1"; // Rojo claro
+                document.body.style.backgroundColor = "#FFB6C1";
             }
         };
 
@@ -74,22 +73,23 @@ const Temperatura = () => {
             className="gauge-container"
             style={{
                 display: 'flex',
-                flexDirection: 'column',
+                flexDirection: 'row',
+                justifyContent: 'center',
                 alignItems: 'center',
-                backgroundColor: '#FFFFFF', // Fondo blanco por defecto
+                backgroundColor: '#FFFFFF',
                 padding: '20px',
                 width: '100%',
                 minHeight: '100vh',
                 boxSizing: 'border-box',
             }}
         >
-            <div style={{ textAlign: 'center', width: '100%', maxWidth: '600px' }}>
-                <h2>Temperatura (°C)</h2>
-                <div id="gaugeC" style={{ width: '100%', height: '0', paddingBottom: '75%' }}></div>
+            <div style={{ textAlign: 'center', width: '50%', padding: '20px' }}>
+                <h2 style={{ color: '#000000' }}>Temperatura (°C)</h2>
+                <div id="gaugeC" style={{ width: '100%', height: '500px' }}></div>
             </div>
-            <div style={{ textAlign: 'center', width: '100%', maxWidth: '600px', marginTop: '20px' }}>
-                <h2>Temperatura (°F)</h2>
-                <div id="gaugeF" style={{ width: '100%', height: '0', paddingBottom: '75%' }}></div>
+            <div style={{ textAlign: 'center', width: '50%', padding: '20px' }}>
+                <h2 style={{ color: '#000000' }}>Temperatura (°F)</h2>
+                <div id="gaugeF" style={{ width: '100%', height: '500px' }}></div>
             </div>
         </div>
     );
