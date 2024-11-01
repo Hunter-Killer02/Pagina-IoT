@@ -18,7 +18,9 @@ const Temperatura = () => {
                 value: 0,
                 min: 0,
                 max: 350,
-                title: "Temperatura (°C)"
+                title: "Temperatura (°C)",
+                gaugeWidthScale: 0.6, // Ajusta el grosor de los medidores
+                levelColors: ["#0000FF", "#FFA500", "#FF0000"] // Colores para las zonas de temperatura
             });
         }
 
@@ -28,17 +30,19 @@ const Temperatura = () => {
                 value: 0,
                 min: 0,
                 max: 650,
-                title: "Temperatura (°F)"
+                title: "Temperatura (°F)",
+                gaugeWidthScale: 0.6,
+                levelColors: ["#0000FF", "#FFA500", "#FF0000"]
             });
         }
 
         const changeBackgroundColor = (tempC) => {
             if (tempC < 20) {
-                document.body.style.backgroundColor = "#0000FF";
-            } else if (tempC > 20 && tempC < 40) {
-                document.body.style.backgroundColor = "#FFA500";
-            } else if (tempC > 40) {
-                document.body.style.backgroundColor = "#FF0000";
+                document.body.style.backgroundColor = "#ADD8E6"; // Azul claro
+            } else if (tempC >= 20 && tempC < 40) {
+                document.body.style.backgroundColor = "#FFD580"; // Naranja claro
+            } else if (tempC >= 40) {
+                document.body.style.backgroundColor = "#FFB6C1"; // Rojo claro
             }
         };
 
@@ -53,13 +57,13 @@ const Temperatura = () => {
                     changeBackgroundColor(tempC);
                 })
                 .fail(() => {
-                    alert("There was a problem with the request.");
+                    alert("Hubo un problema con la solicitud.");
                 });
         };
 
         getReading();
         const intervalId = setInterval(getReading, 1000);
-e
+
         return () => clearInterval(intervalId);
     }, [url]);
 
@@ -67,11 +71,11 @@ e
         <div className="gauge-container" style={{ display: 'flex', justifyContent: 'center', gap: '40px' }}>
             <div style={{ textAlign: 'center' }}>
                 <h2>Temperatura (°C)</h2>
-                <div id="gaugeC" style={{ width: '600px', height: '560px' }}></div>
+                <div id="gaugeC" style={{ width: '300px', height: '280px' }}></div> {/* Tamaño ajustado */}
             </div>
             <div style={{ textAlign: 'center' }}>
                 <h2>Temperatura (°F)</h2>
-                <div id="gaugeF" style={{ width: '600px', height: '560px' }}></div>
+                <div id="gaugeF" style={{ width: '300px', height: '280px' }}></div> {/* Tamaño ajustado */}
             </div>
         </div>
     );
