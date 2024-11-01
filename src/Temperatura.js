@@ -7,11 +7,13 @@ const Temperatura = () => {
     const deviceID = "0a10aced202194944a0593e8";
     const url = `https://api.particle.io/v1/devices/${deviceID}/gradosC`;
 
-    // Referencias para los medidores
     const gCelsiusRef = useRef(null);
     const gFahrenheitRef = useRef(null);
 
     useEffect(() => {
+        // Establecer el fondo blanco por defecto
+        document.body.style.backgroundColor = "#FFFFFF";
+
         if (!gCelsiusRef.current) {
             gCelsiusRef.current = new JustGage({
                 id: "gaugeC",
@@ -19,8 +21,8 @@ const Temperatura = () => {
                 min: 0,
                 max: 350,
                 title: "Temperatura (°C)",
-                gaugeWidthScale: 0.6, // Ajusta el grosor de los medidores
-                levelColors: ["#0000FF", "#FFA500", "#FF0000"] // Colores para las zonas de temperatura
+                gaugeWidthScale: 0.6,
+                levelColors: ["#0000FF", "#FFA500", "#FF0000"]
             });
         }
 
@@ -39,7 +41,7 @@ const Temperatura = () => {
         const changeBackgroundColor = (tempC) => {
             if (tempC < 20) {
                 document.body.style.backgroundColor = "#ADD8E6"; // Azul claro
-            } else if (tempC >= 20 && tempC < 40) {
+            } else if (tempC >= 30 && tempC < 40) {
                 document.body.style.backgroundColor = "#FFD580"; // Naranja claro
             } else if (tempC >= 40) {
                 document.body.style.backgroundColor = "#FFB6C1"; // Rojo claro
@@ -54,7 +56,7 @@ const Temperatura = () => {
 
                     gCelsiusRef.current.refresh(tempC);
                     gFahrenheitRef.current.refresh(tempF);
-                    changeBackgroundColor(tempC);
+                    changeBackgroundColor(tempC); 
                 })
                 .fail(() => {
                     alert("Hubo un problema con la solicitud.");
@@ -68,18 +70,29 @@ const Temperatura = () => {
     }, [url]);
 
     return (
-        <div className="gauge-container" style={{ display: 'flex', justifyContent: 'center', gap: '40px' }}>
-            <div style={{ textAlign: 'center' }}>
+        <div
+            className="gauge-container"
+            style={{
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                backgroundColor: '#FFFFFF', // Fondo blanco por defecto
+                padding: '20px',
+                width: '100%',
+                minHeight: '100vh',
+                boxSizing: 'border-box',
+            }}
+        >
+            <div style={{ textAlign: 'center', width: '100%', maxWidth: '600px' }}>
                 <h2>Temperatura (°C)</h2>
-                <div id="gaugeC" style={{ width: '300px', height: '280px' }}></div>
+                <div id="gaugeC" style={{ width: '100%', height: '0', paddingBottom: '75%' }}></div>
             </div>
-            <div style={{ textAlign: 'center' }}>
+            <div style={{ textAlign: 'center', width: '100%', maxWidth: '600px', marginTop: '20px' }}>
                 <h2>Temperatura (°F)</h2>
-                <div id="gaugeF" style={{ width: '300px', height: '280px' }}></div>
+                <div id="gaugeF" style={{ width: '100%', height: '0', paddingBottom: '75%' }}></div>
             </div>
         </div>
     );
 };
 
 export default Temperatura;
-
