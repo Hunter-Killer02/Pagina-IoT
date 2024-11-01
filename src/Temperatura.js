@@ -71,14 +71,15 @@ const Temperatura = () => {
         <div className="gauge-container" style={{ display: 'flex', justifyContent: 'center', gap: '40px' }}>
             <div style={{ textAlign: 'center' }}>
                 <h2>Temperatura (°C)</h2>
-                <div id="gaugeC" style={{ width: '300px', height: '280px' }}></div> {/* Tamaño ajustado */}
+                <div id="gaugeC" style={{ width: '300px', height: '280px' }}></div>
             </div>
             <div style={{ textAlign: 'center' }}>
                 <h2>Temperatura (°F)</h2>
-                <div id="gaugeF" style={{ width: '300px', height: '280px' }}></div> {/* Tamaño ajustado */}
+                <div id="gaugeF" style={{ width: '300px', height: '280px' }}></div>
             </div>
         </div>
     );
 };
 
 export default Temperatura;
+
