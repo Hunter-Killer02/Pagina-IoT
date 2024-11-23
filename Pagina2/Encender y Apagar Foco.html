@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Control de LED</title>
+  <style>
+    body {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      font-family: Arial, sans-serif;
+      transition: background-color 0.5s ease, color 0.5s ease;
+      background-color: #f4f4f9;
+    }
+
+    h1 {
+      color: #333;
+      margin-bottom: 20px;
+      transition: color 0.5s ease;
+    }
+
+    .button-container {
+      display: flex;
+      gap: 20px;
+      margin-top: 20px;
+    }
+
+    button {
+      padding: 15px 25px;
+      font-size: 18px;
+      font-weight: bold;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      color: white;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    button:hover {
+      transform: scale(1.1);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    }
+
+    .on-button {
+      background-color: #4CAF50;
+    }
+
+    .off-button {
+      background-color: #f44336;
+    }
+
+    .lightbulb {
+      width: 100px;
+      height: 150px;
+      background-image: url('https://path/to/lightbulb-off.png'); /* Imagen de foco apagado */
+      background-size: contain;
+      background-repeat: no-repeat;
+      transition: filter 0.5s ease;
+    }
+
+    .lightbulb.on {
+      background-image: url('https://path/to/lightbulb-on.png'); /* Imagen de foco encendido */
+      filter: brightness(1.2);
+    }
+  </style>
+</head>
+<body>
+
+  <h1 id="title">Control de LED</h1>
+  <div class="lightbulb" id="lightbulb"></div>
+  <div class="button-container">
+    <button class="on-button" onclick="controlLed('ON')">ON</button>
+    <button class="off-button" onclick="controlLed('OFF')">OFF</button>
+  </div>
+
+  <script>
+    function controlLed(state) {
+      const url = 'https://api.particle.io/v1/devices/0a10aced202194944a0593e8/led';
+      const accessToken = '042a3803627d73635a76c369fe055346618db7e5';
+      const params = state;
+
+      fetch(url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        body: `access_token=${accessToken}&params=${params}`
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.return_value !== undefined) {
+          const lightbulb = document.getElementById('lightbulb');
+          const title = document.getElementById('title');
+
+          // Cambiar estado del foco y diseño de la página
+          lightbulb.classList.toggle('on', state === 'ON');
+          document.body.style.backgroundColor = state === 'ON' ? '#ffffff' : '#000000';
+          title.style.color = state === 'ON' ? '#000000' : '#ffffff';
+          
+          // Mensajes de éxito personalizados
+          const message = state === 'ON' 
+            ? '¡El LED se ha encendido correctamente! Código de retorno: 1' 
+            : 'El LED se ha apagado. Código de retorno: 0';
+          alert(message);
+        } else {
+          alert(`Error: ${data.error || 'No se pudo completar la acción'}`);
+        }
+      })
+      .catch(error => {
+        alert(`Error: ${error.message}`);
+      });
+    }
+  </script>
+
+</body>
+</html>

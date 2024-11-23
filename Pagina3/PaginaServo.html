@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Controlar Servo</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin-top: 50px;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 18px;
+            margin: 10px;
+            cursor: pointer;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        #status {
+            margin-top: 20px;
+            font-size: 16px;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <h1>Controlar el Servo</h1>
+    <button onclick="activarServo()">Activar Servo</button>
+    <div id="status">Estado: Esperando comando...</div>
+
+    <script>
+        // Configuración del dispositivo
+        const deviceId = "0a10aced202194944a0593e8";
+        const accessToken = "042a3803627d73635a76c369fe055346618db7e5";
+        const functionName = "activarServo";
+
+        function activarServo() {
+            const statusDiv = document.getElementById("status");
+            statusDiv.textContent = "Enviando comando...";
+
+            fetch(`https://api.particle.io/v1/devices/${deviceId}/${functionName}`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded"
+                },
+                body: `access_token=${accessToken}&arg=activar`
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data.return_value === 1) {
+                    statusDiv.textContent = "Estado: Servo activado y regresado.";
+                } else if (data.return_value === -2) {
+                    statusDiv.textContent = "Estado: El botón físico tiene prioridad.";
+                } else {
+                    statusDiv.textContent = "Error: Comando no reconocido.";
+                }
+            })
+            .catch(error => {
+                console.error("Error:", error);
+                statusDiv.textContent = `Error al conectar con el servidor: ${error.message}`;
+            });
+        }
+    </script>
+</body>
+</html>

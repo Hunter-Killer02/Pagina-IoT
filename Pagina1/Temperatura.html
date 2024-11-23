@@ -1,0 +1,86 @@
+<html>
+<head>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="raphael-2.1.4.min.js"></script>
+    <script src="justgage.js"></script>
+
+    <script>
+        const accessToken = "042a3803627d73635a76c369fe055346618db7e5";
+        const deviceID = "0a10aced202194944a0593e8";
+        const url = "https://api.particle.io/v1/devices/" + deviceID + "/gradosC";
+
+        function changeBackgroundColor(tempC) {
+            // Cambiar el color de fondo basado en la temperatura
+            if (tempC < 20) {
+                document.body.style.backgroundColor = "#0000FF";
+            } else if (tempC > 20 & tempC < 40) {
+                document.body.style.backgroundColor = "#FFA500";
+            } else if (tempC > 40) {
+                document.body.style.backgroundColor = "#FF0000";
+            }
+        }
+
+        function callback(data, status){
+            if (status == "success") {
+                const tempC = parseFloat(data.result).toFixed(2);
+                const tempF = (tempC * 1.8 + 32).toFixed(2);
+
+                gCelsius.refresh(tempC);
+                gFahrenheit.refresh(tempF);
+                changeBackgroundColor(tempC);
+                setTimeout(getReading, 1000);
+            }
+            else {
+                alert("There was a problem");
+            }
+        }
+
+        function getReading(){
+            $.get(url, { access_token: accessToken })
+                .done(callback)
+                .fail(function() {
+                    alert("There was a problem with the request.");
+                });
+        }
+    </script>
+
+    <style>
+        .gauge-container {
+            display: flex;
+            justify-content: center; 
+            gap: 20px;
+        }
+        #gaugeC, #gaugeF {
+            width: 800px;
+            height: 740px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="gauge-container">
+        <div id="gaugeC"></div>
+        <div id="gaugeF"></div>
+    </div>
+
+    <script>
+        const gCelsius = new JustGage({
+            id: "gaugeC",
+            value: 0,
+            min: 0,
+            max: 350,
+            title: "Temperatura (°C)"
+        });
+
+        const gFahrenheit = new JustGage({
+            id: "gaugeF",
+            value: 0,
+            min: 0,
+            max: 650,
+            title: "Temperatura (°F)"
+        });
+
+        getReading();
+    </script>
+</body>
+</html>
